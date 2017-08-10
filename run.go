@@ -6,10 +6,10 @@ import (
 	"net/http"
 
 	_ "github.com/lucasmagnum/thanks-api/commands"
+    "github.com/lucasmagnum/thanks-api/configs"
 	"github.com/lucasmagnum/thanks-api/handlers"
 )
 
-var allowedDomains = []string{"fyndiq"}
 
 func main() {
 	fmt.Println("Starting listening 0.0.0.0:4390")
@@ -20,16 +20,7 @@ func main() {
 func HandleSlackCommand(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
-	teamDomain := r.Form.Get("team_domain")
-
-	domainAllowed := false
-	for _, domain := range allowedDomains {
-		if teamDomain == domain {
-			domainAllowed = true
-		}
-	}
-
-	if !domainAllowed {
+	if !configs.DomainAllowed(r.Form.Get("team_domain")) {
 		http.Error(w, "Domain requests not allowed", 403)
 	}
 
@@ -40,19 +31,8 @@ func HandleSlackCommand(w http.ResponseWriter, r *http.Request) {
 	commandName := r.Form.Get("command")
 	commandText := r.Form.Get("text")
 
-	commandHandler, err := handlers.Get(commandName)
-
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-
-	responseTxt, err := commandHandler.Process(commandText, requestUser)
-
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
+	commandHandler := handlers.Get(commandName)
+	responseTxt := commandHandler.Process(commandText, requestUser)
 
 	response := map[string]string{
 		"text":          responseTxt.Content,

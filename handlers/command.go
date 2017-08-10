@@ -12,5 +12,5 @@ type Result struct {
 
 // Command interface
 type Command interface {
-	Process(commandText string, requestUser RequestUser) (Result, error)
+	Process(commandText string, requestUser RequestUser) Result
 }

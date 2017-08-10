@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"errors"
 	"log"
 )
 
@@ -18,13 +17,13 @@ func Register(commandName string, commandHandler Command) {
 }
 
 // Get is called to retrieve a command handler by it command
-func Get(commandName string) (Command, error) {
+func Get(commandName string) Command {
 	commandHandler, exists := handlers[commandName]
 
 	if !exists {
-		log.Fatalln(commandName, "Handler not found")
-		return commandHandler, errors.New("Handler not found")
+		var empty emptyHandler
+		return empty
 	}
 
-	return commandHandler, nil
+	return commandHandler
 }
