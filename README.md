@@ -4,15 +4,23 @@ Thanks API
 This API was built to implement a positive and simple feedback system using slack.
 
 
-# TODO
+### TODO LIST
+1. How to integrate the slack command
+  1.1. Create a slack command
+  1.2. Test the slack command
+  1.3. Host the API
+  1.4. Set allowed companies
 
-  * [ ] - Create the command handler to `/thanks` and `/thanks-ranking`
-  * [ ] - Save feedbacks in the database
-  * [ ] - Create a command line interface for command handler
-  * [ ] - Create a command line interface to show ranking
-  * [ ] - Create a web API to execute handlers
-  * [ ] - Create a dynamic handler config
-  * [ ] - Create documentation how to implement it from scratch
+2. Slack Commands
+  FeedbackCommand
+    - Explain how it works
+  RankingCommand
+    - Explain how it works
+
+3. Development
+  How to install
+  How to run tests
+  How to contribute
 
 
 ### How to use
@@ -65,7 +73,7 @@ The ranking is available online too, just access http://app-host-address/company
     $ desc feedbacks;
 
     id  from        to          company
-    1   @username   @username1  Company AB  
+    1   @username   @username1  Company AB
   ```
 
 
@@ -102,7 +110,7 @@ To properly run this project, you should have Golang > 1.8
 
   ```bash
   $ go version
-  go version go1.8.3 
+  go version go1.8.3
   ```
 
 * Note: this project was build using Golang 1.8.3, but it could work in old versions too.
@@ -118,7 +126,7 @@ To run tests, just execute `make tests`:
 
 
 ### Useful links
-  
+
   1. [Install Go](https://golang.org/doc/install)
   2. [Go for beginners (Portuguese Version)](https://medium.com/@lucasmagnum/iniciando-em-go-6a34d200f02c)
 
