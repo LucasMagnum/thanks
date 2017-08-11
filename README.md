@@ -124,6 +124,11 @@ To run tests, just execute `make tests`:
   $ make tests
   ```
 
+### 3. How to test slack command
+
+We can test the command before deploying it, we have some tools to help us =)
+
+
 
 ### Useful links
 

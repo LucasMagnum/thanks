@@ -10,49 +10,65 @@ import (
 	"github.com/lucasmagnum/thanks-api/handlers"
 )
 
+var feedbackCommandName = configs.Commands.FeedbackCommand
+
+
 func init() {
-	var command FeedbackCommand
-	handlers.Register(configs.FeedbackCommandName, command)
+    var command FeedbackCommand
+    handlers.Register(feedbackCommandName, command)
 }
+
 
 type FeedbackCommand struct{}
 
 func (f FeedbackCommand) Process(commandText string, slackUser handlers.SlackUser) handlers.Result {
 	var resultContent bytes.Buffer
 
-	users, _ := parseCommand(commandText)
+	users := parseUsers(commandText)
+    usersCount := len(users)
 
-	if len(users) == 0 {
-		return handlers.Result{
-			Content: fmt.Sprintf(
-				`Hej! Could you specify one or more users for your feedback? :D
-                Ex: %s @username <feedback>`, configs.FeedbackCommandName),
-		}
-	}
+    if usersCount == 0 {
+        return handlers.Result{
+            Content: fmt.Sprintf(configs.Messages.UsersNotFound, feedbackCommandName),
+        }
+    }
 
 	for _, user := range users {
-		text := fmt.Sprintf("Congratulations @%s! You earned +1 feedback point\n", user.Username)
-		resultContent.WriteString(text)
+        if user.UserId == slackUser.UserId {
+
+            // When the user is trying to send a feedback
+            // to himself, we should return the self feedback message
+            if usersCount == 1 {
+                return handlers.Result{
+                    Content: configs.Messages.SelfFeedback,
+                }
+            }
+
+            continue
+        }
+
+        text := fmt.Sprintf(configs.Messages.SuccessFeedback, user.Username)
+        resultContent.WriteString(text)
 	}
 
-	result := handlers.Result{
-		Content: resultContent.String(),
-	}
+    return handlers.Result{
+        Content: resultContent.String(),
+    }
 
-	return result
 }
 
-func parseCommand(commandText string) ([]handlers.SlackUser, string) {
-	var users []handlers.SlackUser
 
+func parseUsers(commandText string) (users []handlers.SlackUser) {
 	userRegex := regexp.MustCompile("@([a-zA-Z0-9].)+")
 
 	for _, user := range userRegex.FindAllString(commandText, -1) {
 		userId, userName := user, user[1:]
 
-		// User has the escaped value @userid|username
+		// User has the escaped value <@userid|username>
 		if strings.Contains(user, "|") {
-			splitUser := strings.Split(user, "|")
+            cleanedUsername := strings.Replace(user, ">", "", -1)
+			splitUser := strings.Split(cleanedUsername, "|")
+
 			userId = splitUser[0][1:]
 			userName = splitUser[1]
 		}
@@ -63,5 +79,5 @@ func parseCommand(commandText string) ([]handlers.SlackUser, string) {
 		})
 	}
 
-	return users, commandText
+	return
 }

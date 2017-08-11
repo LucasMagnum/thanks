@@ -1,16 +1,53 @@
 package configs
 
-var AllowedDomains = []string{"fyndiq",}
-var FeedbackCommandName = "/thanks"
+import (
+    "log"
 
+    "github.com/kelseyhightower/envconfig"
+)
 
-func DomainAllowed(domain string) bool {
-    for _, allowedDomain := range AllowedDomains {
-        if domain == allowedDomain {
-            return true
-        }
+type APIConfig struct {
+    AllowedTeamDomain string
+    CheckDomain bool
+    Port int
+}
+
+type CommandsConfig struct {
+    FeedbackCommand string
+    RankingCommand string
+    ResponseType string
+}
+
+type MessagesConfig struct {
+    HandlerNotFound string
+    SelfFeedback string
+    SuccessFeedback string
+    UsersNotFound string
+}
+
+var API APIConfig
+var Commands CommandsConfig
+var Messages MessagesConfig
+
+func init(){
+    log.Print("Loading configs")
+
+    err := envconfig.Process("thanksapi", &API)
+
+    if err != nil {
+        log.Fatalln("Failed to load API configs")
     }
 
-    return false
+    err = envconfig.Process("thanksapi", &Commands)
+    if err != nil {
+        log.Fatalln("Failed to load Commands configs")
+    }
+
+    err = envconfig.Process("thanksapi", &Messages)
+    if err != nil {
+        log.Fatalln("Failed to load Messages configs")
+    }
+
+    log.Print("Loaded configs for API, Commands and Messages")
 }
 

@@ -1,0 +1,24 @@
+- Update Readme
+    * Running with docker
+    * Testing offline
+    * How to use configs
+
+
+- Messages can be defined by configurations
+    - Configs
+        - Allowed teamDomain
+
+        - Default Command
+            - Default command message for invalid command
+
+        - Feedback command
+            - Feeback command messages
+                * Success message
+                * Without users command message
+                * Feedback itself message
+
+        - Ranking command
+
+
+- Handle when command has only the username
+- Handle `help` and `about` for commands

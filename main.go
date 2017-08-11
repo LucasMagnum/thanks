@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	_ "github.com/lucasmagnum/thanks-api/commands"
@@ -11,15 +12,17 @@ import (
 )
 
 func main() {
-	fmt.Println("Starting listening 0.0.0.0:4390")
+	port := fmt.Sprintf(":%d", configs.API.Port)
+
+	log.Printf("Starting listening 0.0.0.0%s", port)
 	http.HandleFunc("/", HandleSlackCommand)
-	http.ListenAndServe(":4390", nil)
+	http.ListenAndServe(port, nil)
 }
 
 func HandleSlackCommand(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
-	if !configs.DomainAllowed(r.Form.Get("team_domain")) {
+	if configs.API.CheckDomain && configs.API.AllowedTeamDomain != r.Form.Get("team_domain") {
 		http.Error(w, "Domain requests not allowed", 403)
 	}
 
@@ -27,15 +30,13 @@ func HandleSlackCommand(w http.ResponseWriter, r *http.Request) {
 		UserId:   r.Form.Get("user_id"),
 		Username: r.Form.Get("user_name"),
 	}
-	commandName := r.Form.Get("command")
-	commandText := r.Form.Get("text")
 
-	commandHandler := handlers.Get(commandName)
-	responseTxt := commandHandler.Process(commandText, slackUser)
+	commandHandler := handlers.Get(r.Form.Get("command"))
+	result := commandHandler.Process(r.Form.Get("text"), slackUser)
 
 	response := map[string]string{
-		"text":          responseTxt.Content,
-		"response_type": "in_channel",
+		"text":          result.Content,
+		"response_type": configs.Commands.ResponseType,
 	}
 
 	jsonResponse, _ := json.Marshal(response)
