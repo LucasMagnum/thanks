@@ -1,8 +1,8 @@
 package handlers
 
 // User that made the command request
-type RequestUser struct {
-	UserID   string
+type SlackUser struct {
+	UserId   string
 	Username string
 }
 
@@ -12,5 +12,5 @@ type Result struct {
 
 // Command interface
 type Command interface {
-	Process(commandText string, requestUser RequestUser) Result
+	Process(commandText string, slackUser SlackUser) Result
 }

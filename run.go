@@ -6,10 +6,9 @@ import (
 	"net/http"
 
 	_ "github.com/lucasmagnum/thanks-api/commands"
-    "github.com/lucasmagnum/thanks-api/configs"
+	"github.com/lucasmagnum/thanks-api/configs"
 	"github.com/lucasmagnum/thanks-api/handlers"
 )
-
 
 func main() {
 	fmt.Println("Starting listening 0.0.0.0:4390")
@@ -24,15 +23,15 @@ func HandleSlackCommand(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Domain requests not allowed", 403)
 	}
 
-	requestUser := handlers.RequestUser{
-		UserID:   r.Form.Get("user_id"),
+	slackUser := handlers.SlackUser{
+		UserId:   r.Form.Get("user_id"),
 		Username: r.Form.Get("user_name"),
 	}
 	commandName := r.Form.Get("command")
 	commandText := r.Form.Get("text")
 
 	commandHandler := handlers.Get(commandName)
-	responseTxt := commandHandler.Process(commandText, requestUser)
+	responseTxt := commandHandler.Process(commandText, slackUser)
 
 	response := map[string]string{
 		"text":          responseTxt.Content,
