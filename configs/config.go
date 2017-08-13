@@ -6,18 +6,23 @@ import (
     "github.com/kelseyhightower/envconfig"
 )
 
+// APIConfig control the API basic behaviours
 type APIConfig struct {
     AllowedTeamDomain string
     CheckDomain bool
     Port int
 }
 
+// CommandsConfig control the Commands behaviours, as
+// FeedbackCommand name and RankingCommand name and the
+// default ResponseType for a command
 type CommandsConfig struct {
     FeedbackCommand string
     RankingCommand string
     ResponseType string
 }
 
+// MessagesConfig control the returned messages for the commands
 type MessagesConfig struct {
     HandlerNotFound string
     SelfFeedback string

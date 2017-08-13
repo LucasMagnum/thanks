@@ -6,7 +6,7 @@ import (
 
 var handlers = make(map[string]Command)
 
-// Register is called to register a command handler for use by the program.
+// Register is called to register a command handler for a slack command.
 func Register(commandName string, commandHandler Command) {
 	if _, exists := handlers[commandName]; exists {
 		log.Fatalln(commandName, "Handler already registered")
@@ -16,7 +16,7 @@ func Register(commandName string, commandHandler Command) {
 	handlers[commandName] = commandHandler
 }
 
-// Get is called to retrieve a command handler by it command
+// Get is called to retrieve a command handler by it command name
 func Get(commandName string) Command {
 	commandHandler, exists := handlers[commandName]
 

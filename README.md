@@ -65,16 +65,24 @@ The ranking is available online too, just access http://app-host-address/company
 
 ### How it works
 
-  This API can be used to one or many companies at the same time, every information is saved with the company name.
+When we type in Slack a command like this:
 
-  We can see it at database level:
+  (slack) > @lucas.magnum: /thanks @lucas.magnum thanks for build this project
 
-  ```
-    $ desc feedbacks;
+I used my user to write call the `/thanks` command with the text `@lucas.magnum thanks for build this project`, then slack will send a POST request to the configured
+url similar to:
 
-    id  from        to          company
-    1   @username   @username1  Company AB
-  ```
+    POST / {
+        "team_domain": "company-1",
+        "user_id": "U165XVKJS",
+        "user_name": "lucas.magnum",
+        "command": "/thanks",
+        "text": "<@U165XVKJS|lucas.magnum> thanks for build this project",
+        // Other fields ...
+    }
+
+This request will be handler by our `HandlerSlackCommand` and we will return the
+command handler response to slack.
 
 
 ### How to integrate

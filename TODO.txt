@@ -21,4 +21,16 @@
 
 
 - Handle when command has only the username
-- Handle `help` and `about` for commands
+    - Return "You should inform a feedback message"
+- Handler when the command is emtpy
+    - Return "Not found"
+- Handle `help` for commands
+
+* Change CommandInterface to receive configs
+* Commands should don't know the configs or the handlers module
+
+    // Try to apply clean archicture
+    * When the application starts, we should load the commands
+        * Create the commands with the needs
+    * Call the command with the command text, receiver the message
+    and return

@@ -17,8 +17,6 @@ func init() {
 type RankingCommand struct{}
 
 func (r RankingCommand) Process(commandText string, slackUser handlers.SlackUser) handlers.Result {
-    return handlers.Result{
-        Content: "A.W.E.S.O.M.E",
-    }
+    return message("A.W.E.S.O.M.E")
 }
 

@@ -2,7 +2,6 @@ package commands
 
 import (
 	"bytes"
-	"fmt"
 	"regexp"
 	"strings"
 
@@ -28,56 +27,66 @@ func (f FeedbackCommand) Process(commandText string, slackUser handlers.SlackUse
     usersCount := len(users)
 
     if usersCount == 0 {
-        return handlers.Result{
-            Content: fmt.Sprintf(configs.Messages.UsersNotFound, feedbackCommandName),
-        }
+        return usersNotFoundMessage()
     }
 
 	for _, user := range users {
         if user.UserId == slackUser.UserId {
-
             // When the user is trying to send a feedback
             // to himself, we should return the self feedback message
             if usersCount == 1 {
-                return handlers.Result{
-                    Content: configs.Messages.SelfFeedback,
-                }
+                return selfFeedbackMessage()
             }
-
             continue
         }
 
-        text := fmt.Sprintf(configs.Messages.SuccessFeedback, user.Username)
-        resultContent.WriteString(text)
+        successMessage := successFeedbackMessage(user.Username)
+        resultContent.WriteString(successMessage.Content)
 	}
 
-    return handlers.Result{
-        Content: resultContent.String(),
+    return message(resultContent.String())
+}
+
+// parseUsers receives the command text and return the a slice
+// of SlackUser
+func parseUsers(commandText string) (users []handlers.SlackUser) {
+    for _, user := range getUsersFromText(commandText) {
+        userId, username := parseUserData(user)
+
+        users = append(users, handlers.SlackUser{
+            UserId:   userId,
+            Username: username,
+        })
     }
 
+    return
+}
+
+// getUsersFromText get user array from commandText
+// the commandText could contain one or more users
+func getUsersFromText(commandText string) ([]string){
+    userRegex := regexp.MustCompile("<?@([a-zA-Z0-9-_.|])+>?")
+    return userRegex.FindAllString(commandText, -1)
 }
 
 
-func parseUsers(commandText string) (users []handlers.SlackUser) {
-	userRegex := regexp.MustCompile("@([a-zA-Z0-9].)+")
+// parseUserData parse data and return the userId and username
+// this function expect the username in the format <@ID|Name> or
+// <@Username>
+func parseUserData(userData string) (userId, username string) {
+    clearRegex := regexp.MustCompile("[<@>]")
+    cleanedUsername := clearRegex.ReplaceAllString(userData, "")
 
-	for _, user := range userRegex.FindAllString(commandText, -1) {
-		userId, userName := user, user[1:]
+    userId, username = cleanedUsername, cleanedUsername
 
-		// User has the escaped value <@userid|username>
-		if strings.Contains(user, "|") {
-            cleanedUsername := strings.Replace(user, ">", "", -1)
-			splitUser := strings.Split(cleanedUsername, "|")
+    // User has the escaped value <@userid|username>
+    if strings.Contains(cleanedUsername, "|") {
+        splitUser := strings.Split(cleanedUsername, "|")
 
-			userId = splitUser[0][1:]
-			userName = splitUser[1]
-		}
+        userId = splitUser[0]
+        username = splitUser[1]
+    }
 
-		users = append(users, handlers.SlackUser{
-			UserId:   userId,
-			Username: userName,
-		})
-	}
-
-	return
+    return
 }
+
