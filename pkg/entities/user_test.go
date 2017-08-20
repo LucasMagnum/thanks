@@ -1,14 +1,13 @@
 package entities
 
 import (
-    "testing"
+	"testing"
 )
 
 var user = User{
-    Id:   "U205PLVJ5",
-    Name: "lucas.magnum",
+	Id:   "U205PLVJ5",
+	Name: "lucas.magnum",
 }
-
 
 func TestUserEntity(t *testing.T) {
 	if len(user.Id) == 0 {

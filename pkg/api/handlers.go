@@ -1,27 +1,28 @@
 package api
 
 import (
-    "encoding/json"
-    "net/http"
+	"encoding/json"
+	"net/http"
 
-    "github.com/lucasmagnum/thanks/pkg/commands"
+	"github.com/lucasmagnum/thanks/pkg/commands"
 )
 
 func FeedbackHandler(w http.ResponseWriter, r *http.Request) {
-    r.ParseForm()
+	r.ParseForm()
 
-    command := commands.NewFeedbackCommand()
-    response, err := command.Process(r.Form)
+	command := commands.NewFeedbackCommand()
+	response, err := command.Process(r.Form)
 
-    if err != nil {
-        http.Error(w, err.Error(), 500)
-    }
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+	}
 
-    jsonResponse, _ := json.Marshal(map[string]string{
-        "text": response,
-        "response_type": "in_channel",
-    })
+	if len(response.ResponseType) == 0 {
+		response.ResponseType = "in_channel"
+	}
 
-    w.Header().Set("Content-Type", "application/json")
-    w.Write(jsonResponse)
+	jsonResponse, _ := json.Marshal(response)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonResponse)
 }
