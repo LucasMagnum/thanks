@@ -14,7 +14,7 @@ type form interface {
 
 type interactor interface {
 	GetUsersFromText(text string) []entities.User
-	IsValidUsers(user entities.User, users []entities.User) (bool, error)
+	ValidateUsers(user entities.User, users []entities.User) error
 }
 
 type FeedbackCommand struct {
@@ -28,7 +28,7 @@ func (f *FeedbackCommand) Process(form form) (Response, error) {
 		Name: form.Get("user_name"),
 	}
 
-	if _, err := f.interactor.IsValidUsers(user, users); err != nil {
+	if err := f.interactor.ValidateUsers(user, users); err != nil {
 		return Response{
 			Text:         err.Error(),
 			ResponseType: "ephemeral",

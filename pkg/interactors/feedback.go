@@ -14,33 +14,42 @@ var ErrSelfFeedback = errors.New("Self feedback not allowed")
 type FeedbackInteractor struct{}
 
 func (f *FeedbackInteractor) GetUsersFromText(text string) []entities.User {
-	var users []entities.User
-
 	userRegex := regexp.MustCompile("<@([\\w-_.|])+>")
 	userStrings := userRegex.FindAllString(text, -1)
+
+	usersMap := make(map[string]entities.User)
 
 	for _, userData := range userStrings {
 		userId, userName := parseUserData(userData)
 
-		users = append(users, entities.User{
-			Id:   userId,
-			Name: userName,
-		})
+		// Avoid duplicate results
+		if _, ok := usersMap[userId]; !ok {
+			usersMap[userId] = entities.User{
+				Id:   userId,
+				Name: userName,
+			}
+		}
+	}
+
+	users := []entities.User{}
+
+	for _, user := range usersMap {
+		users = append(users, user)
 	}
 
 	return users
 }
 
-func (f *FeedbackInteractor) IsValidUsers(user entities.User, users []entities.User) (bool, error) {
+func (f *FeedbackInteractor) ValidateUsers(user entities.User, users []entities.User) error {
 	if len(users) == 0 {
-		return false, ErrUsersNotFound
+		return ErrUsersNotFound
 	}
 
 	if findUser(user, users) {
-		return false, ErrSelfFeedback
+		return ErrSelfFeedback
 	}
 
-	return true, nil
+	return nil
 }
 
 func findUser(user entities.User, users []entities.User) bool {
