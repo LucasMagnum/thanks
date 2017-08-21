@@ -18,11 +18,7 @@ func (f *feedbackInteractor) validateCommand(command command) error {
 		return ErrUsersNotFound
 	}
 
-	commandUser := user{
-		id:   command.userId,
-		name: command.userName,
-	}
-
+	commandUser := NewUser(command.userId, command.userName)
 	if hasUser(users, commandUser) {
 		return ErrSelfFeedback
 	}
@@ -41,10 +37,7 @@ func (f *feedbackInteractor) parseUsersFromText(text string) []user {
 
 		// Avoid duplicate results
 		if _, ok := usersMap[userId]; !ok {
-			usersMap[userId] = user{
-				id:   userId,
-				name: userName,
-			}
+			usersMap[userId] = NewUser(userId, userName)
 		}
 	}
 
@@ -71,7 +64,7 @@ func (f *feedbackInteractor) parseUserData(userData string) (string, string) {
 
 func hasUser(users []user, commandUser user) bool {
 	for _, userSlice := range users {
-		if userSlice.Equal(commandUser) {
+		if userSlice.equal(commandUser) {
 			return true
 		}
 	}

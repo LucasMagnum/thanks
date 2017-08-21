@@ -5,7 +5,7 @@ type user struct {
 	name string
 }
 
-func (u *user) Equal(otherUser user) bool {
+func (u *user) equal(otherUser user) bool {
 	return u.id == otherUser.id && u.name == otherUser.name
 }
 
@@ -20,5 +20,12 @@ func NewCommand(text string, userId string, userName string) command {
 		text:     text,
 		userId:   userId,
 		userName: userName,
+	}
+}
+
+func NewUser(userId string, userName string) user {
+	return user{
+		id:   userId,
+		name: userName,
 	}
 }

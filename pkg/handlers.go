@@ -5,11 +5,11 @@ import (
 	"fmt"
 )
 
-type FeedbackHandler struct {
+type feedbackHandler struct {
 	interactor feedbackInteractor
 }
 
-func (f *FeedbackHandler) ProcessCommand(command command) (string, error) {
+func (f *feedbackHandler) ProcessCommand(command command) (string, error) {
 	if err := f.interactor.validateCommand(command); err != nil {
 		return "", err
 	}
@@ -22,7 +22,7 @@ func (f *FeedbackHandler) ProcessCommand(command command) (string, error) {
 	return responseText, nil
 }
 
-func (f *FeedbackHandler) generateSuccessMessage(users []user) string {
+func (f *feedbackHandler) generateSuccessMessage(users []user) string {
 	var message bytes.Buffer
 
 	for _, user := range users {
@@ -34,8 +34,8 @@ func (f *FeedbackHandler) generateSuccessMessage(users []user) string {
 	return message.String()
 }
 
-func NewFeedbackHandler() FeedbackHandler {
-	return FeedbackHandler{
+func NewFeedbackHandler() feedbackHandler {
+	return feedbackHandler{
 		interactor: feedbackInteractor{},
 	}
 }

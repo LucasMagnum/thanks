@@ -15,7 +15,7 @@ func main() {
 	log.Printf("Starting listening 0.0.0.0%s", port)
 
 	http.HandleFunc("/feedback", handleFeedbackCommand)
-	http.HandleFunc("/raking", handleRankingCommand)
+	http.HandleFunc("/ranking", handleRankingCommand)
 
 	http.ListenAndServe(port, nil)
 }
