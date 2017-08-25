@@ -7,6 +7,7 @@ import (
 
 type feedbackHandler struct {
 	interactor feedbackInteractor
+	backend    feedbackBackend
 }
 
 func (f *feedbackHandler) ProcessCommand(command command) (string, error) {
@@ -16,7 +17,8 @@ func (f *feedbackHandler) ProcessCommand(command command) (string, error) {
 
 	users := f.interactor.parseUsersFromText(command.text)
 
-	//TODO: Save user into database
+	// Save into database
+	f.backend.save(command)
 
 	responseText := f.generateSuccessMessage(users)
 	return responseText, nil
@@ -37,5 +39,6 @@ func (f *feedbackHandler) generateSuccessMessage(users []user) string {
 func NewFeedbackHandler() feedbackHandler {
 	return feedbackHandler{
 		interactor: feedbackInteractor{},
+		backend:    feedbackDatabaseBackend{},
 	}
 }

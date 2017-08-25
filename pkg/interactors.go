@@ -6,8 +6,8 @@ import (
 	"strings"
 )
 
-var ErrUsersNotFound = errors.New("Users not found")
-var ErrSelfFeedback = errors.New("Self feedback not allowed")
+var errUsersNotFound = errors.New("Users not found")
+var errSelfFeedback = errors.New("Self feedback not allowed")
 
 type feedbackInteractor struct{}
 
@@ -15,12 +15,12 @@ func (f *feedbackInteractor) validateCommand(command command) error {
 	users := f.parseUsersFromText(command.text)
 
 	if len(users) == 0 {
-		return ErrUsersNotFound
+		return errUsersNotFound
 	}
 
 	commandUser := NewUser(command.userId, command.userName)
 	if hasUser(users, commandUser) {
-		return ErrSelfFeedback
+		return errSelfFeedback
 	}
 
 	return nil
