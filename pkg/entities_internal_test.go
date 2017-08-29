@@ -9,7 +9,7 @@ func TestUser(t *testing.T) {
 	userInstance := NewUser("01", "User 01")
 
 	if reflect.TypeOf(userInstance) != reflect.TypeOf(user{}) {
-		t.Error("NewUser doesn't returns a user instance")
+		t.Error("NewUser doesn't returns an user instance")
 	}
 
 	if userInstance.id != "01" && userInstance.name != "User 01" {
