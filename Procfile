@@ -1,1 +1,1 @@
-web: thanks/cmd/api
+web: cmd
