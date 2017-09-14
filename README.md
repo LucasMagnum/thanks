@@ -4,25 +4,6 @@ Thanks API
 This API was built to implement a positive and simple feedback system using slack.
 
 
-### TODO LIST
-1. How to integrate the slack command
-  1.1. Create a slack command
-  1.2. Test the slack command
-  1.3. Host the API
-  1.4. Set allowed companies
-
-2. Slack Commands
-  FeedbackCommand
-    - Explain how it works
-  RankingCommand
-    - Explain how it works
-
-3. Development
-  How to install
-  How to run tests
-  How to contribute
-
-
 ### How to use
 
 Once we have the commands installed on our slack, we can run `/thanks` and `/thanks-ranking`:
@@ -81,7 +62,7 @@ url similar to:
         // Other fields ...
     }
 
-This request will be handler by our `HandlerSlackCommand` and we will return the
+This request will be handler by our `handleFeedbackCommand` and we will return the
 command handler response to slack.
 
 

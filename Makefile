@@ -1,8 +1,11 @@
 run:
-	docker-compose run --service-ports api go run cmd/api.go
+	go run cmd/api.go
 
-test:
+tests:
 	go test -cover -v ./...
 
 fmt:
 	@go fmt ./...
+
+setup:
+	go get ./...
