@@ -2,10 +2,10 @@ run:
 	go run cmd/api.go
 
 tests:
-	go test -cover -v ./...
+	go test -cover -v ./app
 
 fmt:
-	@go fmt ./cmd ./pkg
+	@go fmt ./ ./app
 
 setup:
 	go get ./...
