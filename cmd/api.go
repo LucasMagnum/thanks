@@ -5,18 +5,19 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/lucasmagnum/thanks/pkg"
 )
 
 func main() {
 	env_port := os.Getenv("PORT")
-    if env_port == "" {
-        log.Print("$PORT isn't defined, using the default 8080")
-        env_port = "8080"
-    }
+	if env_port == "" {
+		log.Print("$PORT isn't defined, using the default 8080")
+		env_port = "8080"
+	}
 
-    port := fmt.Sprintf(":%s", env_port)
+	port := fmt.Sprintf(":%s", env_port)
 
 	log.Printf("Starting listening 0.0.0.0%s", port)
 
