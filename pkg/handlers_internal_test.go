@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-
 func TestFeedbackHandler(t *testing.T) {
 	handler := NewFeedbackHandler()
 
@@ -36,8 +35,8 @@ func TestFeedbackHandler(t *testing.T) {
 	}
 
 	validCommand := command{
-		text: "Thanks <@UA123|lucas.magnum> for helping me",
-		userId: "UA01",
+		text:     "Thanks <@UA123|lucas.magnum> for helping me",
+		userId:   "UA01",
 		userName: "slack.user",
 	}
 

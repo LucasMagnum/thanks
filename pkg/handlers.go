@@ -18,9 +18,9 @@ func (f *feedbackHandler) ProcessCommand(command command) (string, error) {
 	users := f.interactor.parseUsersFromText(command.text)
 
 	// Save into database
-	//for _, user := range users {
-	//	f.backend.save(command.text, command.userId, user.id)
-	//}
+	for _, user := range users {
+		f.backend.save(command.text, command.userId, user.id)
+	}
 
 	responseText := f.generateSuccessMessage(users)
 	return responseText, nil
