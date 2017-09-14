@@ -15,5 +15,8 @@
 			"revisionTime": "2017-08-18T05:32:00Z"
 		}
 	],
-	"rootPath": "github.com/lucasmagnum/thanks"
+	"rootPath": "github.com/lucasmagnum/thanks",
+    "heroku": {
+        "goVersion": "go1.8.3"
+    }
 }
