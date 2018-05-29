@@ -48,10 +48,9 @@ The ranking is available online too, just access http://app-host-address/company
 
 When we type in Slack a command like this:
 
-  (slack) > @lucas.magnum: /thanks @lucas.magnum thanks for build this project
+  (slack) > @lucas.magnum: /thanks @lucas.magnum thanks for building this project
 
-I used my user to write call the `/thanks` command with the text `@lucas.magnum thanks for build this project`, then slack will send a POST request to the configured
-url similar to:
+I used my user to write call the `/thanks` command with the text `@lucas.magnum thanks for building this project`, then slack will send a POST request to the configured url similar to:
 
     POST / {
         "team_domain": "company-1",
@@ -62,8 +61,7 @@ url similar to:
         // Other fields ...
     }
 
-This request will be handler by our `handleFeedbackCommand` and we will return the
-command handler response to slack.
+This request will be handler by our `handleFeedbackCommand` and we will return the command handler response to slack.
 
 
 ### How to integrate
