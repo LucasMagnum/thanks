@@ -57,7 +57,7 @@ I used my user to write call the `/thanks` command with the text `@lucas.magnum 
         "user_id": "U165XVKJS",
         "user_name": "lucas.magnum",
         "command": "/thanks",
-        "text": "<@U165XVKJS|lucas.magnum> thanks for build this project",
+        "text": "<@U165XVKJS|lucas.magnum> thanks for building this project",
         // Other fields ...
     }
 
